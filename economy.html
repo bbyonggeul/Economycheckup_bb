@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="우리 집 경제 건강 검진표 - 부모님 수입·자산·노후를 내가 얼마나 알고 있는지 점검해보는 자가진단">
+<title>우리 집 경제 건강 검진표 (뿅글이 제작)</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+@font-face {
+  font-family: 'ShinyebinHandwriting';
+  src: url('ongeullip-shinyebin.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink-50: #FFF4F8;
+  --pink-100: #FFE0EC;
+  --pink-200: #FCDFE9;
+  --pink-300: #FBC4D7;
+  --pink-500: #E91E78;
+  --pink-600: #D11668;
+  --pink-700: #B91560;
+  --purple-100: #E8E5F8;
+  --purple-200: #D4CDF0;
+  --purple-300: #B5ADE2;
+  --purple-500: #5D52C9;
+  --purple-700: #4639A8;
+  --lavender: #F0EEFA;
+  --lavender-soft: #F8F6FD;
+  --text-dark: #2C2C3E;
+  --text-mid: #6B6B7A;
+  --text-light: #9999A8;
+  --border-soft: #E6E2F2;
+  --white: #FFFFFF;
+  --danger: #DC4358;
+  --danger-bg: #FDF2F4;
+  --success: #2E9B6B;
+  --success-bg: #EDF8F2;
+  --warning: #C28F2C;
+  --warning-bg: #FAF5E8;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #F0ECFF 0%, #FDE8F2 40%, #EEF0FF 100%);
+  background-attachment: fixed;
+  color: var(--text-dark);
+  line-height: 1.6;
+  font-size: 15px;
+  padding: 32px 16px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+body::before {
+  width: 600px; height: 600px;
+  top: -200px; right: -150px;
+  background: radial-gradient(circle, rgba(233,30,120,0.08) 0%, transparent 70%);
+}
+body::after {
+  width: 500px; height: 500px;
+  bottom: -100px; left: -100px;
+  background: radial-gradient(circle, rgba(99,85,216,0.10) 0%, transparent 70%);
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px 32px;
+  box-shadow: 0 4px 32px rgba(93, 82, 201, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  border-top: 4px solid var(--pink-500);
+  padding-top: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 22px;
+}
+
+.header-tag {
+  display: inline-block;
+  background: var(--pink-50);
+  color: var(--pink-500);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 5px 11px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.header h1 {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  color: var(--text-dark);
+  line-height: 1.25;
+}
+
+.header .subtitle {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  color: var(--purple-700);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* ───────── 인트로 화면 ───────── */
+.intro-lead {
+  font-size: 14.5px;
+  color: var(--text-mid);
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+.intro-lead strong { color: var(--pink-600); font-weight: 700; }
+
+.intro-points {
+  background: var(--lavender-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: 13px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.intro-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13.5px;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 5px 0;
+}
+.intro-point .dot {
+  flex-shrink: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pink-500);
+  margin-top: 8px;
+}
+
+/* 닉네임 입력 */
+.nick-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 6px 6px 6px 16px;
+  margin-bottom: 14px;
+  transition: border-color 0.15s ease;
+}
+.nick-wrap:focus-within { border-color: var(--pink-300); }
+.nick-label {
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-mid);
+}
+.nick-wrap input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-dark);
+  padding: 9px 4px;
+  background: transparent;
+}
+.nick-wrap input::placeholder { color: var(--text-light); font-weight: 500; }
+
+.intro-meta {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 18px;
+  letter-spacing: 0.01em;
+}
+
+/* ───────── 진행도 ───────── */
+.progress {
+  background: var(--lavender-soft);
+  padding: 13px 18px 15px;
+  border-radius: 12px;
+  margin-bottom: 26px;
+  border: 1px solid var(--border-soft);
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--text-mid);
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+.progress-info strong { color: var(--pink-500); font-weight: 800; }
+.progress-track {
+  height: 8px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--pink-300), var(--pink-500));
+  border-radius: 5px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* 영역 세그먼트 점 */
+.progress-cats {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+.progress-cat-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--purple-100);
+  transition: background 0.3s ease;
+}
+.progress-cat-dot.done { background: var(--purple-300); }
+.progress-cat-dot.now { background: var(--pink-500); }
+
+/* ───────── 문항 카드 ───────── */
+.q-card { animation: fadeUp 0.32s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.q-eyebrow {
+  display: inline-block;
+  background: var(--purple-100);
+  color: var(--purple-700);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 5px 11px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
+.q-text {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.q-hint {
+  font-size: 13px;
+  color: var(--text-light);
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.q-hint::before { content: '— '; color: var(--pink-300); }
+
+.opt-list { display: grid; gap: 9px; }
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 15px 16px;
+  background: var(--white);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+.opt:hover { background: var(--pink-50); border-color: var(--pink-300); }
+.opt:focus-visible { outline: 3px solid var(--purple-200); outline-offset: 2px; }
+.opt.selected { background: var(--pink-50); border-color: var(--pink-500); }
+
+.opt-dot {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border-soft);
+  background: var(--white);
+  position: relative;
+  transition: all 0.15s ease;
+}
+.opt:hover .opt-dot { border-color: var(--pink-300); }
+.opt.selected .opt-dot { border-color: var(--pink-500); }
+.opt.selected .opt-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--pink-500);
+}
+
+.q-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+}
+.btn-back {
+  background: transparent;
+  border: none;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 4px;
+  transition: color 0.15s ease;
+}
+.btn-back:hover:not(:disabled) { color: var(--text-mid); }
+.btn-back:disabled { opacity: 0; cursor: default; pointer-events: none; }
+.q-counter-mini { font-size: 12px; color: var(--text-light); font-weight: 600; }
+
+/* ───────── 결과: 검진 결과지 ───────── */
+.result-card {
+  border-radius: 16px;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease;
+  background: var(--white);
+}
+
+/* 결과지 상단: 병원 검진표 헤더 */
+.report-top {
+  border: 1.5px solid var(--border-soft);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  padding: 18px 22px 14px;
+  background: var(--lavender-soft);
+}
+.report-clinic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.report-clinic .clinic-name {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 19px;
+  color: var(--purple-700);
+}
+.report-clinic .clinic-doc {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+}
+.report-meta {
+  display: flex;
+  gap: 18px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--purple-200);
+  font-size: 12px;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+.report-meta b { color: var(--text-dark); font-weight: 800; }
+
+.result-hero {
+  position: relative;
+  text-align: center;
+  padding: 32px 24px 28px;
+  background: linear-gradient(160deg, var(--pink-50), var(--lavender-soft));
+  border: 1.5px solid var(--pink-200);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+}
+
+/* 검진 도장 */
+.result-stamp {
+  width: 96px; height: 96px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px double currentColor;
+  transform: rotate(-8deg);
+  animation: stampIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards;
+  background: rgba(255,255,255,0.55);
+}
+@keyframes stampIn {
+  from { opacity: 0; transform: rotate(-8deg) scale(1.6); }
+  to { opacity: 1; transform: rotate(-8deg) scale(1); }
+}
+.result-stamp .stamp-letter {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 42px;
+  line-height: 1;
+}
+.result-stamp .stamp-sub {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-top: 3px;
+}
+
+.result-grade-name {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--text-dark);
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+.result-score {
+  font-size: 14px;
+  color: var(--text-mid);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.result-score .big {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--pink-600);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 레이더 차트 */
+.radar-wrap {
+  max-width: 380px;
+  margin: 0 auto 6px;
+}
+.radar-wrap svg { width: 100%; height: auto; display: block; }
+.radar-grid { fill: none; stroke: var(--purple-200); stroke-width: 1; }
+.radar-axis { stroke: var(--purple-100); stroke-width: 1; }
+.radar-shape {
+  fill: rgba(233, 30, 120, 0.16);
+  stroke: var(--pink-500);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transform-origin: center;
+  animation: radarGrow 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.25s backwards;
+}
+@keyframes radarGrow {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.radar-pt { fill: var(--pink-500); }
+.radar-label {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text-mid);
+}
+.radar-label.weakest { fill: var(--pink-600); font-weight: 800; }
+
+/* 종합 소견 */
+.opinion-box {
+  margin-top: 18px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px 22px 18px;
+  text-align: left;
+}
+.box-head {
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 20px;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  letter-spacing: -0.005em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.box-head .box-head-en {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--text-light);
+}
+.opinion-body {
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+/* 영역별 점수 */
+.cat-breakdown {
+  margin-top: 16px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px 20px 18px;
+}
+.cat-bar-row { margin-bottom: 13px; }
+.cat-bar-row:last-child { margin-bottom: 0; }
+.cat-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+.cat-bar-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+.cat-bar-pct { font-size: 12px; font-weight: 800; color: var(--text-mid); }
+.cat-bar-track {
+  height: 9px;
+  background: var(--lavender);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.cat-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--pink-300), var(--pink-500));
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cat-bar-fill.low { background: linear-gradient(90deg, var(--purple-300), var(--purple-500)); }
+
+/* 처방전 */
+.rx-box {
+  margin-top: 16px;
+  background: var(--lavender-soft);
+  border: 1.5px dashed var(--pink-300);
+  border-radius: 14px;
+  padding: 20px 22px 18px;
+  text-align: left;
+  position: relative;
+}
+.rx-box::after {
+  content: 'Rx';
+  position: absolute;
+  top: 14px; right: 18px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--pink-200);
+  pointer-events: none;
+}
+.rx-intro {
+  font-size: 13px;
+  color: var(--text-mid);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.rx-item { margin-bottom: 14px; }
+.rx-item:last-child { margin-bottom: 0; }
+.rx-cat {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--pink-600);
+  margin-bottom: 6px;
+}
+.rx-script {
+  background: var(--white);
+  border: 1px solid var(--pink-200);
+  border-radius: 12px 12px 12px 3px;
+  padding: 12px 15px;
+  font-family: 'ShinyebinHandwriting', 'Pretendard', sans-serif;
+  font-size: 18px;
+  color: var(--text-dark);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.rx-tip {
+  font-size: 12.5px;
+  color: var(--text-mid);
+  font-weight: 500;
+  line-height: 1.55;
+}
+.rx-tip::before { content: '💡 '; }
+
+/* 이번 주 미션 */
+.mission-box {
+  margin-top: 16px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px 22px 16px;
+  text-align: left;
+}
+.mission-sub {
+  font-size: 13px;
+  color: var(--text-mid);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.mission-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--border-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+.mission-item:last-of-type { border-bottom: none; }
+.mission-check {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border: 2px solid var(--pink-300);
+  border-radius: 5px;
+  margin-top: 2px;
+}
+.mission-more {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 600;
+  padding-top: 8px;
+}
+
+
+/* ───────── 버튼 ───────── */
+.action-bar {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 15px 26px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  letter-spacing: -0.005em;
+}
+.btn-primary {
+  background: var(--pink-500);
+  color: var(--white);
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(233, 30, 120, 0.20);
+}
+.btn-primary:hover {
+  background: var(--pink-700);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(233, 30, 120, 0.25);
+}
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { background: var(--text-light); cursor: wait; transform: none; box-shadow: none; }
+.btn-ghost {
+  background: var(--white);
+  color: var(--text-mid);
+  border: 1.5px solid var(--border-soft);
+  min-width: 130px;
+}
+.btn-ghost:hover { background: var(--lavender-soft); border-color: var(--purple-300); color: var(--text-dark); }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text-dark);
+  color: var(--white);
+  padding: 11px 18px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.footer-note {
+  margin-top: 26px;
+  padding: 12px 16px;
+  background: var(--lavender-soft);
+  border-radius: 8px;
+  border-left: 2px solid var(--pink-300);
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.footer-note .ct { color: var(--text-mid); font-weight: 700; margin-right: 4px; }
+
+/* 컨페티 */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 600px) {
+  body { padding: 16px 8px; }
+  .container { padding: 26px 18px; border-radius: 14px; }
+  .header h1 { font-size: 30px; }
+  .q-text { font-size: 18px; }
+  .opt { font-size: 14px; padding: 14px 14px; }
+  .result-grade-name { font-size: 26px; }
+  .result-stamp { width: 84px; height: 84px; }
+  .result-stamp .stamp-letter { font-size: 36px; }
+  .report-meta { flex-direction: column; gap: 3px; }
+  .action-bar { flex-direction: column; align-items: stretch; }
+  .btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, .q-card, .result-card, .radar-shape, .result-stamp { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<main class="container">
+
+  <!-- ░░░ 인트로 ░░░ -->
+  <section id="screen-intro">
+    <header class="header">
+      <span class="header-tag">재테크 자가진단</span>
+      <h1>우리 집 경제 건강 검진표</h1>
+      <p class="subtitle">진짜 재테크의 시작은 우리 집 경제 파악부터!</p>
+    </header>
+
+    <p class="intro-lead">
+      부모님의 수입·자산·노후, 우리 집 재정 상태를 내가 얼마나 <strong>'알고 있는지'</strong> 점검하는 검진표예요!
+      집이 부자인지 아닌지를 묻는 게 아니라, 내가 얼마나 파악하고 있는지를 보는 거라 <strong>정답도 오답도 없어요.</strong>
+      솔직하게 체크할수록 내 진짜 빈칸이 보인답니다!
+    </p>
+
+    <div class="intro-points">
+      <div class="intro-point"><span class="dot"></span><span>모르면 모른다고 솔직하게! 그래야 어디부터 알아가면 될지 보여요</span></div>
+      <div class="intro-point"><span class="dot"></span><span>결과지에는 영역별 점수 차트와 함께, 부모님께 바로 써먹을 수 있는 <b>대화 처방전</b>까지 담겨요</span></div>
+      <div class="intro-point"><span class="dot"></span><span>가장 비어있는 칸이 한눈에 보여서, 뭐부터 채울지 바로 알 수 있어요</span></div>
+    </div>
+
+    <div class="nick-wrap">
+      <span class="nick-label">결과지에 적을 이름</span>
+      <input type="text" id="nickname" maxlength="10" placeholder="닉네임 (선택사항이에요!)" autocomplete="off">
+    </div>
+
+    <p class="intro-meta">총 29문항 · 약 3분 · 결과는 이미지로 저장할 수 있어요</p>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" id="btn-start">검진 시작하기</button>
+    </div>
+  </section>
+
+  <!-- ░░░ 문항 ░░░ -->
+  <section id="screen-quiz" class="hidden">
+    <div class="progress">
+      <div class="progress-info">
+        <span><strong id="prog-now">1</strong> / <span id="prog-total">29</span>번 문항</span>
+        <span id="prog-pct">3%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+      <div class="progress-cats" id="prog-cats" aria-hidden="true"><!-- JS로 채움 --></div>
+    </div>
+
+    <div class="q-card" id="q-card"><!-- JS로 채움 --></div>
+  </section>
+
+  <!-- ░░░ 결과 ░░░ -->
+  <section id="screen-result" class="hidden">
+    <div class="result-card" id="result-card"><!-- JS로 채움 --></div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" id="btn-image">결과 이미지로 저장</button>
+      <button class="btn btn-ghost" id="btn-retry">다시 하기</button>
+    </div>
+
+    <div class="footer-note">
+      <span class="ct">© 뿅글이</span>본 자료는 강의 수강생의 학습 목적으로만 사용 가능합니다. 무단 배포·복제·공유 시 저작권법에 따라 법적 조치 대상입니다.
+    </div>
+  </section>
+
+</main>
+
+<canvas id="confetti-canvas" class="hidden"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ───────────── 문항 데이터 ─────────────
+   옵션은 위에서부터 '잘 안다 → 전혀 모른다' 순서.
+   점수: 0번째 옵션 = 4점, 1번째 = 3점, 2번째 = 2점, 3번째 = 1점.
+   모든 가족 재정 문항은 '집이 부유한가'가 아니라 '내가 얼마나 아는가'로 채점. */
+const CATS = [
+  {
+    name: "수입 & 안정성", short: "수입", emoji: "💼",
+    rxScript: "요즘 회사(가게)는 좀 어때? 일은 할 만해?",
+    rxTip: "안부 인사처럼 가볍게 시작하면, 수입이 안정적인지 변동이 있는지 얘기로 자연스럽게 이어져.",
+    questions: [
+      { q: "부모님이 어떤 일을 하시고, 그 수입이 얼마나 안정적인지 알아?", hint: "공무원·정규직처럼 꾸준한지, 자영업·프리랜서처럼 변동이 있는지", opts: ["어떤 일이고 얼마나 안정적인지 잘 알아", "무슨 일 하시는지는 알지만 안정성까진 잘 몰라", "어렴풋이만 알아", "잘 모르겠어"] },
+      { q: "부모님의 월수입이 어느 정도인지 알아?", hint: "", opts: ["정확히 알고 있어", "대략 알고 있어", "나 혼자 추측만 해봤어", "전혀 몰라"] },
+      { q: "부모님 수입이 한 군데서 나오는지, 부수입이 있는지 알아?", hint: "투잡·임대 수익·배당 같은 부수입이 있는지", opts: ["수입원이 몇 개인지 정확히 알아", "주 수입 외 부수입이 있는 정도는 알아", "들어본 적은 있는데 잘 몰라", "전혀 몰라"] }
+    ]
+  },
+  {
+    name: "대출 & 부채", short: "대출", emoji: "💳",
+    rxScript: "요즘 금리 높다던데, 우리 집 대출은 괜찮아?",
+    rxTip: "뉴스 핑계가 최고의 말문 열기야. 걱정하는 마음으로 물으면 부모님도 편하게 답해주셔.",
+    questions: [
+      { q: "우리 집에 빚이 있는지, 있다면 얼마인지 알아?", hint: "주택담보대출·신용대출·자동차 할부·마이너스통장 등", opts: ["있는지 없는지, 금액까지 정확히 알아", "있는지 없는지는 알지만 금액은 대략만 알아", "있다는 건 아는데 규모는 몰라", "있는지 없는지 자체를 몰라"] },
+      { q: "매달 갚는 대출 상환액이 수입 대비 어느 정도인지 알아?", hint: "", opts: ["비율을 꽤 정확히 알아", "대략 감은 있어", "들어본 적은 있는데 잘 몰라", "전혀 모르겠어"] },
+      { q: "부모님이 누군가에게 돈을 빌려줬거나 보증을 선 적이 있는지 알아?", hint: "보증은 숨어있는 폭탄이 될 수 있어", opts: ["있는지 없는지 확실히 알아", "있는 것 같긴 한데 정확힌 몰라", "들어본 적은 있어", "전혀 몰라"] }
+    ]
+  },
+  {
+    name: "비상금 & 현금흐름", short: "비상금", emoji: "🛟",
+    rxScript: "갑자기 큰돈 들어갈 일 생기면 우리 집은 어떻게 해?",
+    rxTip: "보험 광고나 지인 얘기를 핑계 삼아 물어보면 무겁지 않게 꺼낼 수 있어.",
+    questions: [
+      { q: "갑자기 큰 지출이 생기면 우리 집이 어떻게 대응할지 알아?", hint: "의료비·집수리비 등을 대출 없이 현금으로 해결할 수 있는지", opts: ["어떻게 감당할지 알고 있어", "대략 가능할지 안 될지는 감이 와", "생각해 본 적 없어서 잘 몰라", "전혀 모르겠어"] },
+      { q: "부모님이 월수입을 어떻게 관리하고 쓰는지 알아?", hint: "적자가 습관이 되면 빚이 눈덩이처럼 불어나", opts: ["어떻게 관리하시는지 잘 알아", "이야기만 종종 들어봤어", "나 혼자 어림짐작만 해", "전혀 모르겠어"] }
+    ]
+  },
+  {
+    name: "자산 파악", short: "자산", emoji: "💰",
+    rxScript: "엄마아빠는 돈 어디에 모아? 예금이야, 주식이야?",
+    rxTip: "'나 요즘 재테크 공부 중인데~'라며 내 고민을 상담하는 척 물으면 자연스러워.",
+    questions: [
+      { q: "부모님의 전체 자산 규모를 대략이라도 알아?", hint: "부동산·예금·주식 등 포함해서", opts: ["꽤 정확히 알아", "대략은 알아", "거의 몰라", "전혀 몰라"] },
+      { q: "부동산 말고, 부모님 명의의 금융자산을 알아?", hint: "예금·주식·펀드 같은 현금성 자산이 위기 때 진짜 중요해", opts: ["꽤 정확히 알아", "대략은 알아", "거의 몰라", "전혀 몰라"] },
+      { q: "부모님이 투자를 한다면, 그 규모와 무리 없는 수준인지 알아?", hint: "주식·펀드·코인 등. 투자 비중이 너무 크면 시장 충격에 취약해", opts: ["규모도 알고, 무리 없는지도 파악하고 있어", "투자하시는 건 아는데 규모까진 잘 몰라", "들어본 적은 있어", "투자를 하는지조차 몰라"] },
+      { q: "우리 집 자산 대비 부채 비율이 어느 정도인지 알아?", hint: "자산 10억에 대출 8억이면 사실 위험한 구조야", opts: ["비율을 꽤 정확히 알아", "대략 어느 쪽이 많은지는 알아", "들어본 적은 있는데 잘 몰라", "전혀 모르겠어"] }
+    ]
+  },
+  {
+    name: "부동산", short: "부동산", emoji: "🏠",
+    rxScript: "우리 집 전세야, 자가야? 전세면 보증보험은 들어놨어?",
+    rxTip: "전세사기 뉴스 얘기로 시작하면 자연스럽게 우리 집 상황까지 물어볼 수 있어.",
+    questions: [
+      { q: "우리 가족이 사는 집이 자가인지 전세인지 월세인지 알아?", hint: "전세라면 전세보증보험 가입 여부까지", opts: ["자가·전세·월세 여부도, 전세면 보증보험 여부까지 알아", "자가인지 전세인지 월세인지는 알아", "들어본 적은 있는데 헷갈려", "잘 모르겠어"] },
+      { q: "부모님 소유 부동산이 있다면, 그 시세나 공시가격을 알아?", hint: "상속·증여 계획에 꼭 필요한 정보야", opts: ["시세·공시가격을 알거나, 소유 부동산이 없다는 걸 확실히 알아", "대략 알아", "들어본 적은 있는데 잘 몰라", "전혀 몰라"] }
+    ]
+  },
+  {
+    name: "세금", short: "세금", emoji: "🧾",
+    rxScript: "연말정산 같은 거 누가 챙겨? 나도 이제 해야 해서~",
+    rxTip: "내 연말정산을 핑계로 물으면, 부모님이 세금을 어떻게 챙기시는지 같이 알 수 있어.",
+    questions: [
+      { q: "부모님이 세금 신고나 절세에 신경 쓰시는지 알아?", hint: "종합소득세·건강보험료 등 놓치면 손해가 커", opts: ["어떻게 챙기시는지 잘 알아", "기본적인 건 하신다고 들었어", "잘 모르겠어", "전혀 몰라"] },
+      { q: "부모님이 상속이나 증여에 대해 생각해 두신 게 있는지 알아?", hint: "미리 준비할수록 세금을 줄일 수 있어", opts: ["어떤 계획이 있는지 알아", "막연하게 생각은 하신다고 알아", "들어본 적은 있어", "전혀 몰라"] }
+    ]
+  },
+  {
+    name: "보험 & 보장", short: "보험", emoji: "🛡️",
+    rxScript: "나 어릴 때 들어둔 보험 있어? 실비는 들어있어?",
+    rxTip: "내 보험을 물어보다 보면 가족 보험 얘기가 줄줄이 따라 나와. 제일 쉬운 입구야!",
+    questions: [
+      { q: "부모님이 어떤 보험에 가입돼 있는지 알아?", hint: "보장이 없으면 큰 병원비 한 번에 가계가 흔들릴 수 있어", opts: ["가입한 보험 내용을 확실히 알아 (없다면 없다는 것도)", "보험이 있는 건 아는데 내용은 잘 몰라", "들어본 적은 있어", "전혀 몰라"] },
+      { q: "부모님이 내는 보험료가 수입 대비 적정한지 알아?", hint: "보험료가 월수입의 10~15%를 넘으면 점검이 필요해", opts: ["보험료 수준도, 적정한지도 파악하고 있어", "보험료가 얼마인지 대략 알아", "들어본 적은 있어", "전혀 모르겠어"] }
+    ]
+  },
+  {
+    name: "노후 & 부양", short: "노후", emoji: "🌅",
+    rxScript: "엄마아빠는 국민연금 언제부터 받아?",
+    rxTip: "연금 수령 나이는 부담 없는 첫 질문이야. 거기서 노후 준비 얘기로 한 걸음씩 들어가면 돼.",
+    questions: [
+      { q: "부모님 노후 준비가 어느 정도 돼 있는지 알아?", hint: "국민연금·퇴직연금·개인연금·저축 등 포함", opts: ["어느 정도 준비됐는지 잘 알아", "대략은 알아", "거의 몰라", "전혀 모르겠어"] },
+      { q: "부모님이 은퇴 후 나에게 경제적으로 기대실지, 생각해보거나 이야기 나눠봤어?", hint: "미리 알아야 내 재테크 계획도 세울 수 있어", opts: ["이야기 나눠봤고 어느 정도일지 알아", "직접 묻진 않았지만 짐작은 해", "막연히 생각만 해봤어", "생각해 본 적도 없어"] },
+      { q: "우리 가족 중 경제적으로 부양해야 할 다른 가족이 있는지 알아?", hint: "조부모·형제자매 등 부양 부담이 숨어있을 수 있어", opts: ["있는지 없는지, 부담 수준까지 알아", "있는 건 아는데 부담 정도까진 잘 몰라", "들어본 적은 있어", "생각해 본 적 없어"] }
+    ]
+  },
+  {
+    name: "가족 대화 & 인식", short: "대화", emoji: "💬",
+    rxScript: "나 요즘 재테크 공부 시작했다? 이것 좀 봐봐!",
+    rxTip: "이 검진 결과지를 보여드리는 것 자체가 최고의 말문 열기야. 같이 보면서 한 칸씩 채워보자.",
+    questions: [
+      { q: "가족끼리 돈 이야기를 편하게 꺼낼 수 있는 분위기야?", hint: "돈 대화가 금기인 집일수록 위기 대응이 느려져", opts: ["자유롭게 / 비교적 편하게 이야기하는 편이야", "조심스럽지만 가끔은 해", "거의 못 꺼내", "생각해 본 적 없어"] },
+      { q: "부모님이 돈 관리에 얼마나 계획적인지 파악하고 있어?", hint: "계획적인지, 즉흥적인지", opts: ["어떻게 관리하시는지 잘 알아", "대략은 알아", "잘 모르겠어", "전혀 모르겠어"] },
+      { q: "부모님이 갑자기 아프거나 일을 못 하게 되면 우리 집이 어떻게 될지 생각해 본 적 있어?", hint: "생각하기 싫더라도 미리 그려봐야 대비할 수 있어", opts: ["생각해 봤고 어느 정도 대비책도 알아", "생각은 해봤지만 대비책까진 몰라", "막연히 생각만 해봤어", "생각해 본 적 없어"] },
+      { q: "부모님이 금융 사기나 불법 다단계 위험에 노출될 만한지, 신경 써서 살펴본 적 있어?", hint: "중장년층이 특히 타깃이 되기 쉬워", opts: ["관심 갖고 살펴봐서 잘 파악하고 있어", "가끔 관련 대화는 나눠", "신경 써본 적은 없어", "생각해 본 적도 없어"] },
+      { q: "부모님이 재테크나 경제 공부에 관심이 있는 편인지 알아?", hint: "관심 자체가 없으면 위기 대응 속도가 느려져", opts: ["어떤 편이신지 잘 알아", "대략은 알아", "잘 모르겠어", "전혀 모르겠어"] }
+    ]
+  },
+  {
+    name: "나 개인 점검", short: "나", emoji: "✨",
+    rxScript: "이건 부모님이 아니라 내 미션! 이번 주에 ISA·청약통장부터 만들어보자.",
+    rxTip: "둘 다 비대면으로 10분이면 끝나. 오늘 결과지를 저장해두고, 만든 날짜를 옆에 적어보자!",
+    questions: [
+      { q: "내 명의로 ISA나 연금저축 계좌를 만들었어?", hint: "세제 혜택이 크고 복리 효과도 있어서 빨리 시작할수록 유리해", opts: ["개설하고 꾸준히 넣고 있어", "개설은 했는데 잘 안 넣고 있어", "아직 안 했어", "그게 뭔지 잘 몰랐어"] },
+      { q: "내가 받을 수 있는 정부 지원을 알아봤어?", hint: "청년내일저축계좌·청년월세지원·청년교통비 환급 등", opts: ["적극적으로 파악해서 활용 중이야", "파악만 해 둔 상태야", "몇 가지 들어본 적은 있어", "뭐가 있는지 잘 몰라"] },
+      { q: "내 명의의 청약통장이 있어?", hint: "없으면 지금 당장 만드는 게 이득이야", opts: ["가입했고 직접 일정 금액을 넣고 있어", "가입했고 부모님이 넣어주셔", "가입만 해 둔 상태야", "없어"] }
+    ]
+  }
+];
+
+/* 등급표 (100점 환산 기준) — 하위 등급일수록 따뜻하게 */
+const GRADES = [
+  { min: 90, letter: "S", name: "경제 건강 금수저", color: "#B91560",
+    desc: "우리 집 경제를 이 정도로 꿰고 있는 사람, 정말 드물어. 무슨 일이 생겨도 당황하지 않고 대응할 수 있는 준비가 돼 있는 거야. 이미 충분히 잘하고 있으니까, 지금처럼만 꾸준히 챙기면 돼!" },
+  { min: 75, letter: "A", name: "돈 감각 장착 중", color: "#E91E78",
+    desc: "경제 감각이 확실히 있어. 큰 그림은 거의 다 파악하고 있고, 몇 군데 빈칸만 더 채우면 완벽해. 아래에서 점수가 낮게 나온 영역부터 하나씩 알아가 보자. 어렵지 않아!" },
+  { min: 55, letter: "B", name: "알고는 있는데~", color: "#5D52C9",
+    desc: "기본적인 건 알고 있는데, 의외로 비어 있는 칸이 꽤 보여. 근데 이건 전혀 부끄러운 게 아니야! 원래 먼저 물어보지 않으면 모르는 게 당연한 영역이거든. 모르는 항목부터 가볍게 채워가면 금방 올라가." },
+  { min: 35, letter: "C", name: "이제 알아가는 중", color: "#6B5FCF",
+    desc: "아직 모르는 게 많지만, 사실 대부분 여기서 시작해. 몰랐다는 건 그동안 들여다볼 기회가 없었던 것뿐이지, 절대 네 잘못이 아니야. 오늘 이 검진표를 해본 것만으로도 첫걸음을 뗀 거고, 부모님이랑 가벼운 대화부터 시작하면 충분해." },
+  { min: 0, letter: "D", name: "지금부터 시작하면 돼", color: "#8A80C8",
+    desc: "지금까지 우리 집 경제를 들여다볼 일이 없었구나. 근데 그거 알아? 대부분의 사람이 바로 여기서 출발해. '모른다는 걸 안 것' 자체가 이미 큰 한 걸음이야. 너무 부담 갖지 말고, 가장 궁금한 것 하나부터 부모님께 물어보는 걸로 시작해보자. 천천히 같이 알아가자!" }
+];
+
+/* ───────── 상태 ───────── */
+const FLAT = [];
+CATS.forEach((c, ci) => c.questions.forEach((q) => FLAT.push({ ...q, cat: c.name, catIndex: ci })));
+const TOTAL = FLAT.length;
+let answers = new Array(TOTAL).fill(null);
+let cur = 0;
+let nickname = "";
+
+const $ = (id) => document.getElementById(id);
+const pointsFor = (optIdx) => 4 - optIdx;
+const reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+/* ───────── 진행도 세그먼트 ───────── */
+$("prog-cats").innerHTML = CATS.map(() => `<span class="progress-cat-dot"></span>`).join("");
+
+/* ───────── 화면 전환 ───────── */
+function show(screen) {
+  ["screen-intro", "screen-quiz", "screen-result"].forEach((s) => $(s).classList.add("hidden"));
+  $(screen).classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+/* ───────── 문항 렌더 ───────── */
+function renderQuestion() {
+  const item = FLAT[cur];
+  const selected = answers[cur];
+  const optsHtml = item.opts.map((text, i) => `
+    <button class="opt${selected === i ? " selected" : ""}" data-opt="${i}" type="button">
+      <span class="opt-dot"></span>
+      <span>${text}</span>
+    </button>`).join("");
+
+  $("q-card").innerHTML = `
+    <span class="q-eyebrow">${CATS[item.catIndex].emoji} ${item.cat}</span>
+    <p class="q-text">${item.q}</p>
+    ${item.hint ? `<p class="q-hint">${item.hint}</p>` : `<div style="height:6px"></div>`}
+    <div class="opt-list">${optsHtml}</div>
+    <div class="q-nav">
+      <button class="btn-back" id="btn-back" type="button" ${cur === 0 ? "disabled" : ""}>← 이전</button>
+      <span class="q-counter-mini">${item.catIndex + 1} / ${CATS.length} 영역</span>
+    </div>`;
+
+  updateProgress();
+
+  // 옵션 클릭
+  $("q-card").querySelectorAll(".opt").forEach((btn) => {
+    btn.addEventListener("click", () => selectOption(parseInt(btn.dataset.opt, 10)));
+  });
+  $("btn-back").addEventListener("click", goBack);
+}
+
+function updateProgress() {
+  const pct = Math.round(((cur + 1) / TOTAL) * 100);
+  $("prog-now").textContent = cur + 1;
+  $("prog-pct").textContent = pct + "%";
+  $("prog-fill").style.width = pct + "%";
+  const curCat = FLAT[cur].catIndex;
+  $("prog-cats").querySelectorAll(".progress-cat-dot").forEach((d, i) => {
+    d.classList.toggle("done", i < curCat);
+    d.classList.toggle("now", i === curCat);
+  });
+}
+
+let advancing = false;
+function selectOption(i) {
+  if (advancing) return;
+  answers[cur] = i;
+  // 시각 피드백
+  $("q-card").querySelectorAll(".opt").forEach((b) => {
+    b.classList.toggle("selected", parseInt(b.dataset.opt, 10) === i);
+  });
+  advancing = true;
+  setTimeout(() => {
+    advancing = false;
+    if (cur < TOTAL - 1) { cur++; renderQuestion(); }
+    else showResult();
+  }, 300);
+}
+
+function goBack() {
+  if (cur > 0) { cur--; renderQuestion(); }
+}
+
+// 키보드 1~4로 선택
+document.addEventListener("keydown", (e) => {
+  if ($("screen-quiz").classList.contains("hidden")) return;
+  if (["1", "2", "3", "4"].includes(e.key)) {
+    const idx = parseInt(e.key, 10) - 1;
+    if (idx < FLAT[cur].opts.length) selectOption(idx);
+  } else if (e.key === "ArrowLeft" || e.key === "Backspace") {
+    if (document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "INPUT") {
+      e.preventDefault(); goBack();
+    }
+  }
+});
+
+/* ───────── 레이더 차트 (SVG) ───────── */
+function buildRadar(catScores, weakNames) {
+  const W = 380, H = 320, cx = W / 2, cy = H / 2 + 6, R = 104;
+  const N = catScores.length;
+  const ang = (i) => (Math.PI * 2 * i) / N - Math.PI / 2;
+  const pt = (i, r) => [cx + Math.cos(ang(i)) * r, cy + Math.sin(ang(i)) * r];
+  const poly = (r) => Array.from({ length: N }, (_, i) => pt(i, r).map(v => v.toFixed(1)).join(",")).join(" ");
+
+  // 그리드 (25/50/75/100)
+  const grid = [0.25, 0.5, 0.75, 1].map((f) => `<polygon class="radar-grid" points="${poly(R * f)}"/>`).join("");
+  // 축선
+  const axes = Array.from({ length: N }, (_, i) => {
+    const [x, y] = pt(i, R);
+    return `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+  }).join("");
+  // 점수 다각형
+  const shapePts = catScores.map((c, i) => pt(i, R * Math.max(c.pct, 4) / 100).map(v => v.toFixed(1)).join(",")).join(" ");
+  const dots = catScores.map((c, i) => {
+    const [x, y] = pt(i, R * Math.max(c.pct, 4) / 100);
+    return `<circle class="radar-pt" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3"/>`;
+  }).join("");
+  // 라벨
+  const labels = catScores.map((c, i) => {
+    const [x, y] = pt(i, R + 22);
+    const a = ang(i);
+    let anchor = "middle";
+    if (Math.cos(a) > 0.35) anchor = "start";
+    else if (Math.cos(a) < -0.35) anchor = "end";
+    const dy = Math.sin(a) > 0.85 ? 10 : (Math.sin(a) < -0.85 ? -2 : 4);
+    const weak = weakNames.includes(c.name) ? " weakest" : "";
+    return `<text class="radar-label${weak}" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">${c.short}</text>`;
+  }).join("");
+
+  return `
+    <div class="radar-wrap" role="img" aria-label="영역별 점수 레이더 차트">
+      <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        ${grid}${axes}
+        <polygon class="radar-shape" points="${shapePts}" style="transform-origin:${cx}px ${cy}px"/>
+        ${dots}${labels}
+      </svg>
+    </div>`;
+}
+
+/* ───────── 점수 카운트업 ───────── */
+function countUp(el, target, dur) {
+  if (reduceMotion) { el.textContent = target + "점"; return; }
+  const t0 = performance.now();
+  function tick(t) {
+    const p = Math.min((t - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased) + "점";
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ───────── 컨페티 ───────── */
+function fireConfetti() {
+  if (reduceMotion) return;
+  const cv = $("confetti-canvas");
+  cv.classList.remove("hidden");
+  const ctx = cv.getContext("2d");
+  cv.width = window.innerWidth; cv.height = window.innerHeight;
+  const colors = ["#E91E78", "#FBC4D7", "#5D52C9", "#B5ADE2", "#FFD166", "#FFFFFF"];
+  const parts = Array.from({ length: 110 }, () => ({
+    x: Math.random() * cv.width,
+    y: -20 - Math.random() * cv.height * 0.4,
+    w: 6 + Math.random() * 6,
+    h: 8 + Math.random() * 8,
+    vy: 2.2 + Math.random() * 3,
+    vx: -1.2 + Math.random() * 2.4,
+    rot: Math.random() * Math.PI,
+    vr: -0.12 + Math.random() * 0.24,
+    c: colors[Math.floor(Math.random() * colors.length)]
+  }));
+  const t0 = performance.now();
+  function frame(t) {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    parts.forEach((p) => {
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (t - t0 < 3200) requestAnimationFrame(frame);
+    else { ctx.clearRect(0, 0, cv.width, cv.height); cv.classList.add("hidden"); }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ───────── 결과 ───────── */
+function gradeFor(pct) {
+  return GRADES.find((g) => pct >= g.min);
+}
+
+function showResult() {
+  let raw = 0;
+  answers.forEach((a) => { raw += a === null ? 1 : pointsFor(a); });
+  const max = TOTAL * 4;
+  const pct = Math.round((raw / max) * 100);
+  const grade = gradeFor(pct);
+
+  // 영역별 점수
+  const catScores = CATS.map((c, ci) => {
+    let s = 0, m = 0;
+    FLAT.forEach((q, idx) => {
+      if (q.catIndex === ci) { s += pointsFor(answers[idx]); m += 4; }
+    });
+    return { name: c.name, short: c.short, pct: Math.round((s / m) * 100), catIndex: ci };
+  });
+
+  // 가장 비어있는 영역 2개 (100% 미만 중 낮은 순)
+  const weak = catScores.filter((c) => c.pct < 100).sort((a, b) => a.pct - b.pct).slice(0, 2);
+  const weakNames = weak.map((w) => w.name);
+
+  // 검진일 / 수검자
+  const t = new Date();
+  const dateStr = `${t.getFullYear()}.${String(t.getMonth() + 1).padStart(2, "0")}.${String(t.getDate()).padStart(2, "0")}`;
+  const who = nickname ? `${nickname} 님` : "예비 부자 뿅아리 님";
+
+  // 영역별 바
+  const barsHtml = catScores.map((c) => {
+    const low = c.pct < 50;
+    return `
+      <div class="cat-bar-row">
+        <div class="cat-bar-label">
+          <span class="cat-bar-name">${CATS[c.catIndex].emoji} ${c.name}</span>
+          <span class="cat-bar-pct">${c.pct}점</span>
+        </div>
+        <div class="cat-bar-track"><div class="cat-bar-fill${low ? " low" : ""}" data-w="${Math.max(c.pct, 3)}" style="width:0%"></div></div>
+      </div>`;
+  }).join("");
+
+  // 처방전 (가장 약한 영역 1~2개의 대화 스타터)
+  let rxHtml = "";
+  if (weak.length > 0) {
+    const items = weak.map((w) => {
+      const c = CATS[w.catIndex];
+      return `
+        <div class="rx-item">
+          <div class="rx-cat">${c.emoji} ${c.name} · ${w.pct}점</div>
+          <div class="rx-script">"${c.rxScript}"</div>
+          <div class="rx-tip">${c.rxTip}</div>
+        </div>`;
+    }).join("");
+    rxHtml = `
+      <div class="rx-box">
+        <div class="box-head">대화 처방전 <span class="box-head-en">PRESCRIPTION</span></div>
+        <p class="rx-intro">가장 비어있는 칸부터 채워보자! 아래 멘트 그대로, 이번 주 안에 딱 한 번만 꺼내보는 거야.</p>
+        ${items}
+      </div>`;
+  } else {
+    rxHtml = `
+      <div class="rx-box">
+        <div class="box-head">대화 처방전 <span class="box-head-en">PRESCRIPTION</span></div>
+        <p class="rx-intro">처방할 게 없어! 모든 영역을 빠짐없이 파악하고 있다는 뜻이야. 변동이 생길 때마다 가볍게 업데이트만 해주면 돼.</p>
+      </div>`;
+  }
+
+  // 이번 주 미션: '전혀 몰라'(마지막 옵션)로 답한 문항
+  const unknowns = [];
+  FLAT.forEach((q, idx) => { if (answers[idx] === 3) unknowns.push(q); });
+  let missionHtml = "";
+  if (unknowns.length > 0) {
+    const shown = unknowns.slice(0, 5);
+    const items = shown.map((q) => `
+      <div class="mission-item"><span class="mission-check"></span><span>${q.q}</span></div>`).join("");
+    const more = unknowns.length > 5 ? `<div class="mission-more">…그리고 ${unknowns.length - 5}개 더! 한 번에 다 하려고 하지 말고, 일주일에 하나씩이면 충분해.</div>` : "";
+    missionHtml = `
+      <div class="mission-box">
+        <div class="box-head">나의 빈칸 리스트 <span class="box-head-en">MY BLANKS</span></div>
+        <p class="mission-sub">'전혀 몰라'라고 답한 질문들이야. 이게 바로 내 진짜 숙제 목록! 알게 될 때마다 하나씩 지워나가자.</p>
+        ${items}${more}
+      </div>`;
+  }
+
+  $("result-card").innerHTML = `
+    <div class="report-top">
+      <div class="report-clinic">
+        <span class="clinic-name">뿅글이 경제 검진센터</span>
+        <span class="clinic-doc">FAMILY FINANCE CHECK-UP</span>
+      </div>
+      <div class="report-meta">
+        <span>수검자 <b>${who}</b></span>
+        <span>검진일 <b>${dateStr}</b></span>
+        <span>검진 항목 <b>10개 영역 · ${TOTAL}문항</b></span>
+      </div>
+    </div>
+    <div class="result-hero">
+      <div class="result-stamp" style="color:${grade.color}">
+        <span class="stamp-letter">${grade.letter}</span>
+        <span class="stamp-sub">CERTIFIED</span>
+      </div>
+      <div class="result-grade-name">${grade.name}</div>
+      <div class="result-score"><span class="big" id="score-num">0점</span> <span>/ 100점 만점 · ${grade.letter}등급</span></div>
+      ${buildRadar(catScores, weakNames)}
+    </div>
+    <div class="opinion-box">
+      <div class="box-head">종합 소견 <span class="box-head-en">DOCTOR'S NOTE</span></div>
+      <p class="opinion-body">${grade.desc}</p>
+    </div>
+    <div class="cat-breakdown">
+      <div class="box-head">영역별 수치 <span class="box-head-en">SCORES</span></div>
+      ${barsHtml}
+    </div>
+    ${rxHtml}
+    ${missionHtml}`;
+
+  show("screen-result");
+
+  // 애니메이션: 점수 카운트업 + 바 채우기
+  countUp($("score-num"), pct, 1100);
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      $("result-card").querySelectorAll(".cat-bar-fill").forEach((f) => {
+        f.style.width = f.dataset.w + "%";
+      });
+    }, 150);
+  });
+
+  if (pct >= 90) setTimeout(fireConfetti, 500);
+}
+
+/* ───────── 버튼 동작 ───────── */
+$("btn-start").addEventListener("click", () => {
+  nickname = $("nickname").value.trim();
+  cur = 0;
+  renderQuestion();
+  show("screen-quiz");
+});
+
+$("btn-retry").addEventListener("click", () => {
+  answers = new Array(TOTAL).fill(null);
+  cur = 0;
+  show("screen-intro");
+});
+
+$("btn-image").addEventListener("click", function () {
+  const btn = this;
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "이미지 만드는 중...";
+  const card = $("result-card");
+
+  html2canvas(card, {
+    backgroundColor: "#FFFFFF",
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    windowWidth: card.scrollWidth,
+    windowHeight: card.scrollHeight
+  }).then((canvas) => {
+    const link = document.createElement("a");
+    const t = new Date();
+    const d = t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0");
+    link.download = "우리집-경제건강-검진표_" + d + ".png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    btn.disabled = false;
+    btn.textContent = original;
+    showToast("이미지로 저장됐어요");
+  }).catch((err) => {
+    btn.disabled = false;
+    btn.textContent = original;
+    showToast("저장에 실패했어요. 다시 시도해주세요");
+    console.error(err);
+  });
+});
+
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+</script>
+
+</body>
+</html>
