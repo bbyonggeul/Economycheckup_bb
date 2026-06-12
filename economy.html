@@ -466,13 +466,7 @@ body::after {
   margin: 0 auto 6px;
 }
 .radar-wrap svg { width: 100%; height: auto; display: block; }
-.radar-grid { fill: none; stroke: var(--purple-200); stroke-width: 1; }
-.radar-axis { stroke: var(--purple-100); stroke-width: 1; }
 .radar-shape {
-  fill: rgba(233, 30, 120, 0.16);
-  stroke: var(--pink-500);
-  stroke-width: 2;
-  stroke-linejoin: round;
   transform-origin: center;
   animation: radarGrow 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.25s backwards;
 }
@@ -480,14 +474,6 @@ body::after {
   from { transform: scale(0); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
-.radar-pt { fill: var(--pink-500); }
-.radar-label {
-  font-family: 'Pretendard', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  fill: var(--text-mid);
-}
-.radar-label.weakest { fill: var(--pink-600); font-weight: 800; }
 
 /* 종합 소견 */
 .opinion-box {
@@ -766,15 +752,13 @@ body::after {
     </header>
 
     <p class="intro-lead">
-      부모님의 수입·자산·노후, 우리 집 재정 상태를 내가 얼마나 <strong>'알고 있는지'</strong> 점검하는 검진표예요!
-      집이 부자인지 아닌지를 묻는 게 아니라, 내가 얼마나 파악하고 있는지를 보는 거라 <strong>정답도 오답도 없어요.</strong>
-      솔직하게 체크할수록 내 진짜 빈칸이 보인답니다!
+      부모님의 수입·자산·노후, 우리 집 경제를 내가 얼마나 <strong>'알고 있는지'</strong> 보는 검진표예요.
+      <strong>정답도 오답도 없으니</strong> 솔직하게만 체크해주세요!
     </p>
 
     <div class="intro-points">
-      <div class="intro-point"><span class="dot"></span><span>모르면 모른다고 솔직하게! 그래야 어디부터 알아가면 될지 보여요</span></div>
-      <div class="intro-point"><span class="dot"></span><span>결과지에는 영역별 점수 차트와 함께, 부모님께 바로 써먹을 수 있는 <b>대화 처방전</b>까지 담겨요</span></div>
-      <div class="intro-point"><span class="dot"></span><span>가장 비어있는 칸이 한눈에 보여서, 뭐부터 채울지 바로 알 수 있어요</span></div>
+      <div class="intro-point"><span class="dot"></span><span>솔직할수록 내 진짜 빈칸이 잘 보여요</span></div>
+      <div class="intro-point"><span class="dot"></span><span>결과지엔 영역별 차트와 <b>대화 처방전</b>까지 담겨요</span></div>
     </div>
 
     <div class="nick-wrap">
@@ -1047,20 +1031,17 @@ function buildRadar(catScores, weakNames) {
   const pt = (i, r) => [cx + Math.cos(ang(i)) * r, cy + Math.sin(ang(i)) * r];
   const poly = (r) => Array.from({ length: N }, (_, i) => pt(i, r).map(v => v.toFixed(1)).join(",")).join(" ");
 
-  // 그리드 (25/50/75/100)
-  const grid = [0.25, 0.5, 0.75, 1].map((f) => `<polygon class="radar-grid" points="${poly(R * f)}"/>`).join("");
-  // 축선
+  /* 색상·폰트를 인라인 속성으로 직접 지정해야 이미지 저장(html2canvas) 시에도 그대로 나온다 */
+  const grid = [0.25, 0.5, 0.75, 1].map((f) => `<polygon points="${poly(R * f)}" fill="none" stroke="#D4CDF0" stroke-width="1"/>`).join("");
   const axes = Array.from({ length: N }, (_, i) => {
     const [x, y] = pt(i, R);
-    return `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+    return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E8E5F8" stroke-width="1"/>`;
   }).join("");
-  // 점수 다각형
   const shapePts = catScores.map((c, i) => pt(i, R * Math.max(c.pct, 4) / 100).map(v => v.toFixed(1)).join(",")).join(" ");
   const dots = catScores.map((c, i) => {
     const [x, y] = pt(i, R * Math.max(c.pct, 4) / 100);
-    return `<circle class="radar-pt" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3"/>`;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#E91E78"/>`;
   }).join("");
-  // 라벨
   const labels = catScores.map((c, i) => {
     const [x, y] = pt(i, R + 22);
     const a = ang(i);
@@ -1068,15 +1049,15 @@ function buildRadar(catScores, weakNames) {
     if (Math.cos(a) > 0.35) anchor = "start";
     else if (Math.cos(a) < -0.35) anchor = "end";
     const dy = Math.sin(a) > 0.85 ? 10 : (Math.sin(a) < -0.85 ? -2 : 4);
-    const weak = weakNames.includes(c.name) ? " weakest" : "";
-    return `<text class="radar-label${weak}" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">${c.short}</text>`;
+    const weak = weakNames.includes(c.name);
+    return `<text x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}" font-family="Pretendard, sans-serif" font-size="11" font-weight="${weak ? 800 : 700}" fill="${weak ? "#D11668" : "#6B6B7A"}">${c.short}</text>`;
   }).join("");
 
   return `
     <div class="radar-wrap" role="img" aria-label="영역별 점수 레이더 차트">
       <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
         ${grid}${axes}
-        <polygon class="radar-shape" points="${shapePts}" style="transform-origin:${cx}px ${cy}px"/>
+        <polygon class="radar-shape" points="${shapePts}" fill="rgba(233,30,120,0.16)" stroke="#E91E78" stroke-width="2" stroke-linejoin="round" style="transform-origin:${cx}px ${cy}px"/>
         ${dots}${labels}
       </svg>
     </div>`;
@@ -1168,7 +1149,7 @@ function showResult() {
     return `
       <div class="cat-bar-row">
         <div class="cat-bar-label">
-          <span class="cat-bar-name">${CATS[c.catIndex].emoji} ${c.name}</span>
+          <span class="cat-bar-name">${c.name}</span>
           <span class="cat-bar-pct">${c.pct}점</span>
         </div>
         <div class="cat-bar-track"><div class="cat-bar-fill${low ? " low" : ""}" data-w="${Math.max(c.pct, 3)}" style="width:0%"></div></div>
@@ -1182,7 +1163,7 @@ function showResult() {
       const c = CATS[w.catIndex];
       return `
         <div class="rx-item">
-          <div class="rx-cat">${c.emoji} ${c.name} · ${w.pct}점</div>
+          <div class="rx-cat">${c.name} · ${w.pct}점</div>
           <div class="rx-script">"${c.rxScript}"</div>
           <div class="rx-tip">${c.rxTip}</div>
         </div>`;
@@ -1288,11 +1269,24 @@ $("btn-image").addEventListener("click", function () {
 
   html2canvas(card, {
     backgroundColor: "#FFFFFF",
-    scale: 2,
+    scale: Math.min(3, Math.max(2, window.devicePixelRatio || 2)),
     useCORS: true,
     logging: false,
-    windowWidth: card.scrollWidth,
-    windowHeight: card.scrollHeight
+    scrollX: 0,
+    scrollY: 0,
+    onclone: (clonedDoc) => {
+      // 애니메이션/트랜지션 중간 상태가 찍히지 않도록 완료 상태로 고정
+      const cc = clonedDoc.getElementById("result-card");
+      cc.querySelectorAll("*").forEach((el) => {
+        el.style.animation = "none";
+        el.style.transition = "none";
+      });
+      cc.style.animation = "none";
+      // 바 차트 너비를 최종값으로 고정
+      cc.querySelectorAll(".cat-bar-fill").forEach((f) => {
+        if (f.dataset.w) f.style.width = f.dataset.w + "%";
+      });
+    }
   }).then((canvas) => {
     const link = document.createElement("a");
     const t = new Date();
